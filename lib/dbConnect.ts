@@ -4,6 +4,7 @@ declare global {
 }
 
 const MONGODB_URI = process.env.MONGODB_URI!
+// console.log("mongoURL:", MONGODB_URI)
 
 if (!MONGODB_URI) {
   throw new Error(
@@ -19,6 +20,7 @@ if (!cached) {
 
 async function dbConnect() {
   if (cached.conn) {
+    console.log("Cached conn already existed")
     return cached.conn
   }
   if (!cached.promise) {
@@ -32,11 +34,12 @@ async function dbConnect() {
   }
   try {
     cached.conn = await cached.promise
+    console.log("Cached conn in try")
   } catch (e) {
     cached.promise = null
     throw e
   }
-
+  console.log("Cached conn")
   return cached.conn
 }
 

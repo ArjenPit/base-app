@@ -13,5 +13,4 @@ const TasksSchema = new mongoose.Schema<Tasks>({
   },
 });
 
-export default mongoose.models.Task ||
-  mongoose.model<Tasks>("Task", TasksSchema);
+export default mongoose.models.Task || mongoose.model<Tasks>("Task", TasksSchema);

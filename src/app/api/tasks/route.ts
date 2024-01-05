@@ -14,3 +14,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: "Method not allowed" });
   }
 }
+
+export async function GET(req: NextRequest) {
+  if (req.method === "GET") {
+    await dbConnect();
+    const tasks = await Task.find({});
+    console.log("Tasks", tasks);
+    return NextResponse.json(tasks);
+  } else {
+    return NextResponse.json({ message: "Method not allowed" });
+  }
+}

@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 
 export default function TasksPage() {
   const [name, setName] = React.useState("");
-
+  const [tasks, setTasks] =React.useState([]);
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
   };
@@ -28,6 +28,18 @@ export default function TasksPage() {
       });
   };
 
+  React.useEffect(() => {
+    fetch("/api/tasks")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setTasks(data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
   return (
     <Container>
       <Box
@@ -43,6 +55,7 @@ export default function TasksPage() {
         </Typography>
         <input name="name" value={name} onChange={handleInputChange} />
         <button onClick={handleSubmit}>Submit</button>
+        {tasks.map((item) => <div>{item.name}</div>)}
       </Box>
     </Container>
   );
