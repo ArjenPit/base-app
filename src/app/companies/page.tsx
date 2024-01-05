@@ -34,7 +34,7 @@ export default async function Page({
           gap: '10px',
           justifyContent: 'space-between',
         }}>
-          <SearchBar placeholder="Search companies tralala"></SearchBar>
+          <SearchBar placeholder="Search companies ofzo"></SearchBar>
           <Button
             href="/companies/create"
             style={{ width: '300px' }}
@@ -46,6 +46,7 @@ export default async function Page({
         </FormControl>
         <CompaniesTable
           rows={rows}
+          query={query}
         />   
       </Box>
     </Container>

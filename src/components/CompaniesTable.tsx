@@ -15,7 +15,8 @@ import { deleteOneCompany } from "@/actions";
 import { Link } from "@mui/material";
 
 interface CompaniesTableProps {
-  rows: Companies[];
+  rows: Companies[],
+  query: string,
 }
 
 const handleDeleteClick = (id: GridRowId) => () => {
@@ -78,8 +79,8 @@ const columns: GridColDef[] = [
   },
 ];
 
-export default function CompaniesTable({ rows, query }: CompaniesTableProps, string) {
-
+export default function CompaniesTable({ rows, query }: CompaniesTableProps) {
+  console.log("Dit is de query in de table: ", query)
   return (
     <Box
       sx={{
