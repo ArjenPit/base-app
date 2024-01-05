@@ -1,14 +1,21 @@
 import * as React from "react";
 import { Box, Button, Container, FormControl, InputAdornment, TextField, Typography } from "@mui/material";
 import { Add, Search } from '@mui/icons-material';
-// import CompaniesServer from "@/components/CompaniesServer";
 import { Companies } from "../../../models/Company";
-// import dbConnect from "@/dbConnect";
 import { fetchCompanies } from "@/actions";
 import CompaniesTable from "@/components/CompaniesTable";
+import SearchBar from "@/components/SearchBar";
 
+export default async function Page({
+  searchParams,
+}: {
+  searchParams?: {
+    query?: string;
+};
+}) {
+  const query = searchParams?.query || '';
+  console.log("query: ", query)
 
-export default async function Page() {
   const rows: Companies[] = await fetchCompanies();
   
   return (
@@ -27,19 +34,7 @@ export default async function Page() {
           gap: '10px',
           justifyContent: 'space-between',
         }}>
-          <TextField
-            fullWidth
-            label="Search companies..."
-            type="search"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Search />
-                </InputAdornment>
-              ),
-            }}
-            variant="standard"
-          />
+          <SearchBar placeholder="Search companies tralala"></SearchBar>
           <Button
             href="/companies/create"
             style={{ width: '300px' }}

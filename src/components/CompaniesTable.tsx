@@ -13,8 +13,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import { deleteOneCompany } from "@/actions";
 import { Link } from "@mui/material";
-// import Link from "next/link";
-
 
 interface CompaniesTableProps {
   rows: Companies[];
@@ -72,7 +70,7 @@ const columns: GridColDef[] = [
         <GridActionsCellItem
           icon={<DeleteIcon />}
           label="Delete"
-          onClick={() => handleDeleteClick(id)}
+          onClick={handleDeleteClick(id)}
           color="inherit"
         />,
       ];
@@ -80,13 +78,7 @@ const columns: GridColDef[] = [
   },
 ];
 
-export default function CompaniesTable({ rows }: CompaniesTableProps) {
-  // const rows = props.rows;
-  // console.log("rows: ", rows)
-  // function getRowId(rows: { id: string; }) {
-  //   return rows.id;
-  // }
-  // getRowId={getRowId}
+export default function CompaniesTable({ rows, query }: CompaniesTableProps, string) {
 
   return (
     <Box
