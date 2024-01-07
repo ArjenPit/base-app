@@ -19,5 +19,5 @@ export async function POST(req: NextRequest) {
   const createCompany = await Company.create({ name, address, phone });
   revalidatePath('/companies');
   redirect('/companies');
-  return NextResponse.json(createCompany);
+  // return NextResponse.json(createCompany);
 }
