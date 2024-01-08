@@ -3,15 +3,28 @@ import * as React from "react";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { Numbers } from "@mui/icons-material";
+import { Button, Divider, IconButton, List, ListItem, ListItemText, TextField } from "@mui/material";
+import { Delete } from "@mui/icons-material";
+import { deleteOneTask } from "@/actions";
 
 export default function TasksPage() {
   const [name, setName] = React.useState("");
-  const [tasks, setTasks] = React.useState([]);
+  const [tasks, setTasks] = React.useState([{name: "", _id: {} }]);
+  
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
   };
 
+  const handleDeleteTask = (id: string) => {
+    deleteOneTask(id)
+    setTasks(tasks.filter((task) => task._id !== id))
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Enter') {
+      handleSubmit()
+    }
+  }
 
   const handleSubmit = () => {
     fetch("/api/tasks", {
@@ -23,7 +36,12 @@ export default function TasksPage() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        console.log("data na api task: ", data)
+        setTasks([
+          ...tasks,
+          data
+        ])
+        setName("")
       })
       .catch((error) => {
         console.error(error);
@@ -34,7 +52,7 @@ export default function TasksPage() {
     fetch("/api/tasks")
       .then((response) => response.json())
       .then((data) => {
-        // console.log(data);
+        console.log('ik haal data op')
         setTasks(data);
       })
       .catch((error) => {
@@ -42,7 +60,17 @@ export default function TasksPage() {
       });
   }, []);
 
-  const listItems = tasks.map((item:{_id: Object, name: String}) => <li key={item._id.toString()}>{item.name}</li>)
+  console.log("ik render ofzo")
+
+  const listItems = tasks.map((item:{ _id: {}, name: string }) => (
+    <ListItem disablePadding key={item._id?.toString()}>
+      <ListItemText primary={item.name} />
+      <IconButton onClick={() => handleDeleteTask(item._id?.toString())}>
+        <Delete />
+      </IconButton>
+    </ListItem>
+    )
+  )
 
   return (
     <Container>
@@ -52,17 +80,18 @@ export default function TasksPage() {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
+          gap: "10px",
         }}
       >
-        <Typography variant="body1" gutterBottom>
+        <Typography sx={{ mt: 0, mb: 0 }} variant="h6">
           Tasks Page
         </Typography>
-        <input name="name" value={name} onChange={handleInputChange} />
-        <button onClick={handleSubmit}>Submit</button>
-        <Typography variant="h5" mt="16px" mb="0px">Tasks list</Typography>
-        <ul>
+        <TextField label="Enter new task" variant="outlined" name="name" value={name} onChange={handleInputChange} onKeyDown={handleKeyDown} />
+        <Button variant="contained" onClick={handleSubmit}>Submit</Button>
+        <Typography sx={{ mt: 3, mb: 0 }} variant="h6">Tasks list</Typography>
+        <List dense>
           {listItems}
-        </ul>
+        </List>
       </Box>
     </Container>
   );
