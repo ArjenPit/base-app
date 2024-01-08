@@ -3,13 +3,15 @@ import * as React from "react";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import { Numbers } from "@mui/icons-material";
 
 export default function TasksPage() {
   const [name, setName] = React.useState("");
-  const [tasks, setTasks] =React.useState([]);
+  const [tasks, setTasks] = React.useState([]);
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
   };
+
 
   const handleSubmit = () => {
     fetch("/api/tasks", {
@@ -32,13 +34,15 @@ export default function TasksPage() {
     fetch("/api/tasks")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         setTasks(data);
       })
       .catch((error) => {
         console.error(error);
       });
   }, []);
+
+  const listItems = tasks.map((item:{_id: Object, name: String}) => <li key={item._id.toString()}>{item.name}</li>)
 
   return (
     <Container>
@@ -55,7 +59,10 @@ export default function TasksPage() {
         </Typography>
         <input name="name" value={name} onChange={handleInputChange} />
         <button onClick={handleSubmit}>Submit</button>
-        {tasks.map((item) => <div>{item.name}</div>)}
+        <Typography variant="h5" mt="16px" mb="0px">Tasks list</Typography>
+        <ul>
+          {listItems}
+        </ul>
       </Box>
     </Container>
   );
