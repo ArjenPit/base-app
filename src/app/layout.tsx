@@ -15,6 +15,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import HomeIcon from '@mui/icons-material/Home';
 import StarIcon from '@mui/icons-material/Star';
 import BusinessIcon from '@mui/icons-material/Business';
+import GroupIcon from '@mui/icons-material/Group'
 import ChecklistIcon from '@mui/icons-material/Checklist';
 import SettingsIcon from '@mui/icons-material/Settings';
 import SupportIcon from '@mui/icons-material/Support';
@@ -33,6 +34,7 @@ const LINKS = [
   { text: 'Starred', href: '/starred', icon: StarIcon },
   { text: 'Tasks', href: '/tasks', icon: ChecklistIcon },
   { text: 'Companies', href: '/companies', icon: BusinessIcon },
+  { text: 'Persons', href: '/persons', icon: GroupIcon }
 ];
 
 const PLACEHOLDER_LINKS = [

@@ -1,8 +1,6 @@
 "use client";
 import * as React from "react";
 import { Box, Button, Container, FormControl, Link, TextField, Typography } from "@mui/material";
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { createCompany } from "@/actions";
 
 export default function Page() {
@@ -16,26 +14,6 @@ export default function Page() {
   });
   const [phone, setPhone] = React.useState("");
 
-//   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-//     setName(event.target.value);
-//   };
-
-  // const handleSubmit = () => {
-  //   fetch("/api/companies", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({ name, address, phone }),
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log(data);
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // };
   const handleSubmit = () => {
     console.log(name, address, phone)
     createCompany(name, address, phone)

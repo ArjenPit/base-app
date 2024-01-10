@@ -5,7 +5,7 @@ import { TextField, InputAdornment } from "@mui/material"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useDebouncedCallback } from "use-debounce";
 
-export default function SearchBar({ placeholder }: {placeholder: string}) {
+export default function SearchBar({ placeholder, label }: {placeholder: string, label: string}) {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const { replace } = useRouter();
@@ -24,7 +24,7 @@ export default function SearchBar({ placeholder }: {placeholder: string}) {
     return (
         <TextField
             fullWidth
-            label="Search companies..."
+            label={label}
             placeholder={placeholder}
             type="search"
             InputProps={{
