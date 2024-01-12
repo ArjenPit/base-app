@@ -1,18 +1,19 @@
 import mongoose from "mongoose";
 
 export interface Person {
-  _id: mongoose.Types.ObjectId;
+  _id: mongoose.Types.ObjectId | null;
   firstName: string;
   lastName: string;
   address: {
     street: string;
-    number: number;
+    number: number | null;
     addendum: string;
     city: string;
     postcode: string;
     country: string;
   };
-  company: mongoose.Types.ObjectId;
+  company: mongoose.Types.ObjectId | null;
+  // company: string;
 }
 
 // Put all person methods to this interface

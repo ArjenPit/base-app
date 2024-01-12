@@ -4,39 +4,51 @@ import {
   Autocomplete,
   Box,
   Button,
+  Chip,
   Container,
   FormControl,
   TextField,
   Typography,
 } from "@mui/material";
-import { createPerson } from "@/personActions";
+import { createPerson, listCompanyNames } from "@/personActions";
 import { Person } from "../../../../models/Person";
-import { fetchCompanies } from "@/actions";
-import { Companies } from "../../../../models/Company";
+
+let loading = true;
+
+type ListItem = { label: string, id: string };
 
 export default function Page() {
-  const [personData, setPersonData] = React.useState<Person>();
+  const [personData, setPersonData] = React.useState<Person>(
+    {
+      _id: null,
+      firstName: '',
+      lastName: '',
+      address: {
+        street: '',
+        number: null,
+        addendum: '',
+        city: '',
+        postcode: '',
+      country: '',
+  },
+  company: null,
+  });
 
-  const [companyList, setCompanyList] = React.useState<Companies[]>();
+  const [companyList, setCompanyList] = React.useState<ListItem[]>([{}]);
+  const [value, setValue] = React.useState<ListItem | null>({ label: "", id: ""});
+  // const [inputValue, setInputValue] = React.useState<string>();
   
   React.useEffect(() => {
-    fetchCompanies().then(data => setCompanyList(data));
-    // setCompanyList(data);
+    listCompanyNames().then((data) => {
+      setCompanyList(data);
+      setValue(data[0]);
+      loading=false;
+      // setInputValue(data[0].label)
+    });
   }, [])
-  
-  console.log(companyList)
 
-  const options: {label: string, id: number}[] = [
-    { label: "fivano", id: 1 },
-    { label: "universiteit", id: 2 },
-    { label: "school", id: 3 },
-    { label: "jemoeder", id: 4 },
-    { label: "jevader", id: 5 },
-    { label: "jezus", id: 6 },
-  ];
 
-  const [value, setValue] = React.useState<{id: number, label: string} | null>(options[0]);
-//   const [inputValue, setInputValue] = React.useState('');
+
 
 
   const handleSubmit = () => {
@@ -46,6 +58,7 @@ export default function Page() {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPersonData((prevFormData) => {
+      console.log("targetname", event.target.name, " value: ", event.target.value)
       return {
         ...prevFormData,
         [event.target.name]: event.target.value,
@@ -64,8 +77,6 @@ export default function Page() {
       };
     });
   }
-
-  console.log(value);
 
   return (
     <Container>
@@ -159,7 +170,6 @@ export default function Page() {
               fullWidth
             />
           </Box>
-
           <TextField
             id="country"
             label="Country"
@@ -168,30 +178,33 @@ export default function Page() {
             onChange={handleAddressChange}
             fullWidth
           />
-          <Autocomplete
-            id="combo-box-demo"
+          {!loading && <Autocomplete
+            id="controllable-states-demo"
             value={value}
-            onChange={(event: any, newValue: {id: number, label: string} | null) => {
+            onChange={(event: any, newValue: ListItem | null) => {
               setValue(newValue);
             }}
             // inputValue={inputValue}
-            // onInputChange={(event, newInputValue) => {
+            // onInputChange={(_event, newInputValue: string) => {
             //   setInputValue(newInputValue);
             // }}
-            isOptionEqualToValue={(option:{id: number, label: string}, value:{ id: number, label: string}) => option.id === value.id}
-            options={options}
-            renderInput={(params) => <TextField {...params} label="Search Company" />}
+            // isOptionEqualToValue={(option:{ label: string, id: string }, value:{ label: string,  id: string}) => option.id === value.id}
+            options={companyList}
+            renderOption={(props, option) => {
+              return (
+                <li {...props} key={option.id}>
+                  {option.label}
+                </li>
+              )
+            }}
+            renderTags={(tagValue, getTagProps) => {
+              return tagValue.map((option, index) => (
+                <Chip {...getTagProps({ index })} key={option.id} label={option.label} />
+              ))
+            }}
+            renderInput={(params) => <TextField {...params} name='company' value={value.id} onChange={handleChange} label="Search Company" />}
             fullWidth
-          />
-          {/* <TextField
-                select
-                id="company"
-                label="Company"
-                name="company"
-                value={personData?.company}
-                onChange={handleChange}
-                required fullWidth
-            /> */}
+          />}
           <Box display="flex" gap="10px">
             <Button variant="contained" color="error" href="/persons">
               X
