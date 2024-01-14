@@ -17,7 +17,6 @@ export async function fetchCompanies(): Promise<Companies[]> {
         return company;
       })
     );
-    // console.log("Updated Companies List:", updatedCompaniesList);
     return updatedCompaniesList as Companies[];
   } catch (error) {
     console.error("Error fetching companies:", error);

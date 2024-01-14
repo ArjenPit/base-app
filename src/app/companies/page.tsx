@@ -4,11 +4,9 @@ import {
   Button,
   Container,
   FormControl,
-  InputAdornment,
-  TextField,
   Typography,
 } from "@mui/material";
-import { Add, Search } from "@mui/icons-material";
+import { Add } from "@mui/icons-material";
 import { Companies } from "../../../models/Company";
 import { fetchCompanies } from "@/actions";
 import CompaniesTable from "@/components/CompaniesTable";

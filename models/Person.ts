@@ -6,7 +6,7 @@ export interface Person {
   lastName: string;
   address: {
     street: string;
-    number: number | null;
+    number: string;
     addendum: string;
     city: string;
     postcode: string;
@@ -30,7 +30,7 @@ const personSchema = new mongoose.Schema<Person, PersonModel, PersonMethods>({
   lastName: { type: String, required: true },
   address: {
     street: String,
-    number: Number,
+    number: String,
     addendum: String,
     city: String,
     postcode: String,
