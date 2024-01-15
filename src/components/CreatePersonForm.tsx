@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Autocomplete,
   Box,
@@ -15,47 +15,47 @@ import { Person } from "../../models/Person";
 
 type ListItem = { label: string, id: string };
 
-let loading = true;
+// let loading = true;
 
-export default function CreatePersonForm( {companyListData}: {companyListData: ListItem[]} ) {
-    console.log("tralala: ", companyListData)
+export default function CreatePersonForm( {companyList}: {companyList: ListItem[]} ) {
+    // console.log("tralala: ", companyListData)
     const [personData, setPersonData] = useState<Person>(
-        {
-          _id: null,
-          firstName: '',
-          lastName: '',
-          address: {
-            street: '',
-            number: '',
-            addendum: '',
-            city: '',
-            postcode: '',
+      {
+        _id: null,
+        firstName: '',
+        lastName: '',
+        address: {
+          street: '',
+          number: '',
+          addendum: '',
+          city: '',
+          postcode: '',
           country: '',
-      },
-      company: null,
+        },
+        company: '',
       });
-    
-      const [companyList, setCompanyList] = useState<ListItem[]>([{}]);
-      const [value, setValue] = useState<ListItem | null>({label:"", id:""});
-      // const [inputValue, setInputValue] = React.useState<string>();
+// console.log(companyList[0].label)
+      // const [companyList, setCompanyList] = useState<ListItem[]>(companyListData);
+      const [value, setValue] = useState<ListItem | null>(null);
+      // const [inputValue, setInputValue] = useState<string>(companyList[0].label);
       
-    //   useEffect(() => {
-    //     dataPromise.then((data) => {
-    //       setCompanyList(data);
-    //       setValue(data[0]);
-    //       loading=false;
-    //       // setInputValue(data[0].label)
-    //     });
-    //   }, [])
-
       const handleSubmit = () => {
-        // console.log(personData);
-        // createPerson(person)
+        console.log(personData);
+        createPerson(personData);
       };
+
+      const handleCompanyChange = (id: string | null | undefined) => {
+        console.log("I am handling company ID; value: ", id)
+        setPersonData((prevFormData) => {
+          return {
+            ...prevFormData,
+            company: id,
+          };
+        });
+      }
     
       const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setPersonData((prevFormData) => {
-        //   console.log("targetname", event.target.name, " value: ", event.target.value)
           return {
             ...prevFormData,
             [event.target.name]: event.target.value,
@@ -176,19 +176,19 @@ export default function CreatePersonForm( {companyListData}: {companyListData: L
                 onChange={handleAddressChange}
                 fullWidth
               />
-              {loading && <TextField label="Search Company" value="Loading company list" fullWidth />}
-              {!loading && <Autocomplete
-                id="controllable-states-demo"
+              <Autocomplete
+                id="company"
                 value={value}
-                onChange={(event: any, newValue: ListItem | null) => {
-                  setValue(newValue);
+                onChange={(_event, newValue: ListItem | null) => {
+                  handleCompanyChange(newValue?.id)
+                  setValue(newValue)
                 }}
                 // inputValue={inputValue}
                 // onInputChange={(_event, newInputValue: string) => {
                 //   setInputValue(newInputValue);
                 // }}
-                // isOptionEqualToValue={(option:{ label: string, id: string }, value:{ label: string,  id: string}) => option.id === value.id}
                 options={companyList}
+                fullWidth
                 renderOption={(props, option) => {
                   return (
                     <li {...props} key={option.id}>
@@ -201,9 +201,17 @@ export default function CreatePersonForm( {companyListData}: {companyListData: L
                     <Chip {...getTagProps({ index })} key={option.id} label={option.label} />
                   ))
                 }}
-                renderInput={(params) => <TextField {...params} name='company' value={value.id} onChange={handleChange} label="Search Company" />}
-                fullWidth
-              />}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Select a Company"
+                    inputProps={{
+                      ...params.inputProps,
+                      autoComplete: 'new-password', // disable autocomplete and autofill
+                    }}
+                  />
+                )}
+              />
               <Box display="flex" gap="10px">
                 <Button variant="contained" color="error" href="/persons">
                   X

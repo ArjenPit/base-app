@@ -8,47 +8,56 @@ import {
   GridColDef,
   GridRowId,
 } from "@mui/x-data-grid";
-import { Companies } from "../../models/Company";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
-import { deleteOneCompany } from "@/actions";
 import { Link } from "@mui/material";
+import { Person } from "../../models/Person";
+import { deleteOnePerson } from "@/personActions";
 
-interface CompaniesTableProps {
-  rows: Companies[],
+interface PersonsTableProps {
+  rows: Person[],
   query: string,
 }
 
 const handleDeleteClick = (id: GridRowId) => () => {
-  deleteOneCompany(id);
+  deleteOnePerson(id);
 };
 
 const columns: GridColDef[] = [
-  { field: "id", headerName: "ID", width: 250 },
+  { field: "id", headerName: "ID", width: 50 },
   {
-    field: "name",
-    headerName: "Company name",
+    field: "firstName",
+    headerName: "First name",
     width: 150,
-    editable: true,
+  },
+  {
+    field: "lastName",
+    headerName: "Last name",
+    width: 150,
   },
   {
     field: "address",
     headerName: "Address",
     sortable: false,
     width: 250,
-    // editable: false,
     renderCell: (params) => (
       <div>
-        {params.row.address.street} <br />
-        {params.row.address.postcode} {params.row.address.city}
+        {params.row.address.street} {params.row.address.number}{params.row.address.addendum ? "-" : " "}{params.row.address.addendum}<br />
+        {params.row.address.postcode} {params.row.address.city} {params.row.address.country}
       </div>
     ),
   },
   {
-    field: "phone",
-    headerName: "Phone",
-    width: 110,
-    editable: true,
+    field: "company",
+    headerName: "Company name",
+    sortable: false,
+    width: 250,
+    renderCell: (params) => (
+      <div>
+        {params.row.company.name} <br />
+        {params.row.company._id}
+      </div>
+    ),
   },
   {
     field: "actions",
@@ -65,7 +74,7 @@ const columns: GridColDef[] = [
           LinkComponent={Link}
           // Ignore this because LinkComponent is used the href is a valid prop
           // @ts-ignore
-          href={`/companies/${id}/edit`}
+          href={`/persons/${id}/edit`}
           color="inherit"
         />,
         <GridActionsCellItem
@@ -79,8 +88,8 @@ const columns: GridColDef[] = [
   },
 ];
 
-export default function CompaniesTable({ rows, query }: CompaniesTableProps) {
-  console.log("Dit is de query in de table: ", query)
+export default function PersonsTable({ rows, query }: PersonsTableProps) {
+  // console.log("Dit is de query in de table: ", query)
   return (
     <Box
       sx={{

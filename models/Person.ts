@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 export interface Person {
-  _id: mongoose.Types.ObjectId | null;
+  _id: mongoose.Types.ObjectId | string | null | undefined;
   firstName: string;
   lastName: string;
   address: {
@@ -12,7 +12,7 @@ export interface Person {
     postcode: string;
     country: string;
   };
-  company: mongoose.Types.ObjectId | null;
+  company: mongoose.Types.ObjectId | string | null | undefined;
   // company: string;
 }
 

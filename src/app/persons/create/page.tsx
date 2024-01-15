@@ -1,13 +1,14 @@
 
-import { createPerson, listCompanyNames } from "@/personActions";
+import { listCompanyNames } from "@/personActions";
 import CreatePersonForm from "@/components/CreatePersonForm";
-import { Box, TextField } from "@mui/material";
 
 
 
-export default function Page() {
-  const dataset2 = listCompanyNames();
+export default async function Page() {
+
+  const dataset = await listCompanyNames();
+
   return (
-    <CreatePersonForm companyListData={dataset2} />
+    <CreatePersonForm companyList={dataset} />
   )
 }

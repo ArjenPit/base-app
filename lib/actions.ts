@@ -74,18 +74,6 @@ export async function updateCompany(data: {
 export async function fetchCompanyById(id: string) {
   try {
     await dbConnect();
-    // const {name, address, phone}: {
-    //     name: string;
-    //     address: {
-    //         street: string;
-    //         postcode: string;
-    //         city: string;
-    //         province: string;
-    //         country: string;
-    //     };
-    //     phone: string
-    // } = await Company.findById(id).lean() as Companies;
-    // console.log(name, address, phone)
     return await Company.findById<Companies>(id).lean() as Companies;
   } catch (error) {
     throw error;

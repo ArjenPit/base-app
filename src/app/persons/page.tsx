@@ -1,8 +1,24 @@
+
+import PersonsTable from "@/components/PersonsTable";
 import SearchBar from "@/components/SearchBar";
 import { Add } from "@mui/icons-material";
 import { Box, Button, Container, Typography } from "@mui/material";
+import { Person } from "../../../models/Person";
+import { fetchPersons } from "@/personActions";
 
-export default function Page() {
+
+
+export default async function Page({
+  searchParams,
+}: {
+  searchParams?: {
+    query?: string;
+  };
+}) {
+
+  const query = searchParams?.query || "";
+  const rows: Person[] = await fetchPersons();
+
   return (
     <Container>
       <Box
@@ -33,6 +49,7 @@ export default function Page() {
             Add new person
           </Button>
         </Box>
+        <PersonsTable rows={rows} query={query} />
       </Box>
     </Container>
   );
